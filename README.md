@@ -90,6 +90,8 @@ Before you begin, ensure you have the following installed:
 
     ```
 
+9. If you would like to broadcast your event using the sync queue instead of the default queue driver, you can implement the ShouldBroadcastNow interface instead of ShouldBroadcast. Otherwise you should change QUEUE_CONNECTION to 'sync' in .env file.But ist not recommend. Because this can breake whole queue system.
+
 ## Usage
 
 1. Serve the backend application:
