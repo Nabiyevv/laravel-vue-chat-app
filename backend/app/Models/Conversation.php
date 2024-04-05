@@ -12,8 +12,7 @@ class Conversation extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['sender_id', 'receiver_id', 'is_deleted'];
-
+    protected $fillable = ['id','sender_id', 'receiver_id', 'is_deleted','last_message_id'];
 
     public function messages()
     {
@@ -25,14 +24,22 @@ class Conversation extends Model
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-
-    public function getReceiverUser()
+    public function sender()
     {
-        if(auth()->user()->id === $this->sender_id)
-            return User::find($this->receiver_id);
-
-        else
-            return User::find($this->sender_id);
+        return $this->belongsTo(User::class, 'sender_id');
     }
 
+    public function getOtherUserAttribute()
+    {
+        if ($this->sender_id === auth()->user()->id) {
+            return $this->receiver->only('id', 'name','username','email','avatar');
+        } else {
+            return $this->sender->only('id', 'name', 'email','username','avatar');
+        }
+    }
+
+    public function lastMessage()
+    {
+        return $this->belongsTo(Message::class, 'last_message_id');
+    }
 }
