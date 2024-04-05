@@ -2,10 +2,12 @@
 import { onMounted, ref, type PropType } from 'vue';
 import { type IUser } from '../types/auth.type';
 import { useAuthStore } from '../stores/auth.store';
+import { useRoute, useRouter } from 'vue-router';
+import { type IConversation } from '../types/conversation.type';
 
 const authStore = useAuthStore();    
-const conversationUser = localStorage.getItem('conversation-user');
-
+const conversations = ref<IConversation[]>([]);
+const route = useRoute();
 type ConversationMessages = {
     id: number;
     sender_id: number;
@@ -24,9 +26,10 @@ type ConversationMessages = {
     }[];
 }
 
-onMounted(() => { 
-    if(conversationUser)
-        console.log("🚀 ~ file: ChatList.vue:31 ~ onMounted ~ conversationUser:", JSON.parse(conversationUser));
+onMounted(() => {
+    conversations.value = JSON.parse(localStorage.getItem('conversations') || '');
+    let conversation = conversations?.value.find(user => user.id.toString() == route.params.id);
+    localStorage.setItem('current-conversation',JSON.stringify(conversation));
 })
 
 defineProps({
