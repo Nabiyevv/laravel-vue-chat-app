@@ -29,11 +29,10 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User Logged In Successfully',
-            'token' => "saadasd",//$user->createToken("API TOKEN")->plainTextToken,
+            'token' => $user->createToken("API_TOKEN")->plainTextToken,
             'user' => $user
         ], 200);
     }
-
 
     public function register(Request $request)
     {
