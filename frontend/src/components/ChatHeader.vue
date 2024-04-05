@@ -1,6 +1,14 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import { type IUser } from '../types/auth.type';
+import { type IConversation } from '../types/conversation.type';
 
 
+const currentConversation = ref<IConversation>();
+
+onMounted(() => {
+    currentConversation.value = JSON.parse(localStorage.getItem('current-conversation') || '');
+})
 
 </script>
 
@@ -20,9 +28,9 @@
             </div>
             <div class="flex flex-col leading-tight">
                 <div class="text-2xl mt-1 flex items-center">
-                    <span class="text-gray-700 mr-3">Anderson Vanhron</span>
+                    <span class="text-gray-700 mr-3">{{ currentConversation?.other_user.name }}</span>
                 </div>
-                <span class="text-lg text-gray-600">Junior Developer</span>
+                <span class="text-lg text-gray-600">{{ currentConversation?.other_user.username }}</span>
             </div>
         </div>
         <div class="flex items-center space-x-2">
