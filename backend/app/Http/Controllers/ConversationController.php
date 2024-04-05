@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserConversationResource;
 use App\Models\Conversation;
 use App\Models\ConversationUser;
 use App\Models\Message;
@@ -25,22 +26,12 @@ class ConversationController extends Controller
             ], 404);
         }
 
-        // $conversations = Conversation::with('messages')->whereAny(['sender_id','receiver_id'],$user->id)->latest('updated_at')->get();
-
-        $conversations = $user->conversations()->latest('updated_at')->get();
-
-        $userConversations = [];
-
-        foreach ($conversations as $conversation) {
-            $conversation['receiver_name'] = $conversation->getReceiverUser()->name;
-            $userConversations[] = $conversation;
-        }
-
+        $conversations = $user->conversations()->orderBy('updated_at', 'desc')->get();
 
         return response()->json([
             'status' => true,
             'message' => 'Conversations found',
-            'data' => $conversations
+            'data' => UserConversationResource::collection($conversations)
         ], 200);
     }
 
@@ -49,7 +40,7 @@ class ConversationController extends Controller
     {
         $conversationMessages = Conversation::with('messages')->find($id);
 
-        if ($conversationMessages && $conversationMessages->messages->count() > 0){
+        if ($conversationMessages && $conversationMessages->messages->count() > 0) {
 
             return response()->json([
                 'status' => true,
