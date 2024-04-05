@@ -23,13 +23,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/user/conversations', [ConversationController::class, 'authUserConversations'])->name('user.conversations');
     Route::get('/user/conversations/{id}/messages', [ConversationController::class, 'conversationMessages'])->name('user.conversations');
-
-
-
     Route::post('/send-message', [MessageController::class, 'store'])->name('user.messages.store');
 });
-
-
 
 Route::get('/event',function(){
     // broadcast(new \App\Events\ChatMessage('user','message'));
