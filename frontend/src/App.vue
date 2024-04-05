@@ -15,14 +15,6 @@ watch(router.currentRoute, (to, from) => {
     isAuth.value = false;
 });
 
-const handelClick = () => { 
-  axiosClient.get('/api/event')
-  .then(response =>console.log(response))
-  .catch(e => console.log(e));
-
-  console.log(window.Echo.connector.pusher.connection.state)
-};
-
 onMounted(() => {
   console.log(window.Echo);
 });
@@ -32,8 +24,6 @@ onMounted(() => {
 <template>
 
   <RouterView v-if="isAuth" />
-
-  <button @click="handelClick">Click Me</button>
 
   <div v-if="!isAuth" class="flex h-screen overflow-hidden">
     <!-- SideBar -->
